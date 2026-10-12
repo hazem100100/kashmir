@@ -111,42 +111,23 @@
     <div class="modal" id="adminModal">
         <div class="modal-content admin-content">
             <div class="admin-header">
-                <h3>لوحة تحكم الأدمن (سحابية)</h3>
+                <h3>لوحة تحكم الأدمن</h3>
                 <button class="close-modal" onclick="closeAdmin()">&times;</button>
             </div>
             <div class="admin-body">
                 
-                <!-- إعدادات ربط جيت هب (مرة واحدة) -->
-                <div class="form-section" style="border: 2px dashed var(--secondary);">
-                    <h4>⚙️ إعدادات الربط السحابي بـ GitHub (تُكتب مرة واحدة)</h4>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>GitHub Username</label>
-                            <input type="text" id="setting-gh-user" placeholder="مثال: hazem100100">
-                        </div>
-                        <div class="form-group">
-                            <label>Repository Name</label>
-                            <input type="text" id="setting-gh-repo" placeholder="مثال: kashmir">
-                        </div>
-                        <div class="form-group full">
-                            <label>GitHub Token (الرمز السري الذي نسخته)</label>
-                            <input type="password" id="setting-gh-token" placeholder="الصق الرمز هنا (يبدأ بـ ghp_...)">
-                        </div>
-                    </div>
-                </div>
-
                 <div class="form-section">
                     <h4>1. الهوية، العناوين، الخلفية، والألوان</h4>
                     <div class="form-grid">
-                        <div class="form-group"><label>اسم اللوجو (يمين)</label><input type="text" id="setting-logo"></div>
-                        <div class="form-group"><label>عنوان الكفر (منتصف)</label><input type="text" id="setting-title"></div>
-                        <div class="form-group full"><label>الوصف التعريفي</label><input type="text" id="setting-subtitle"></div>
-                        <div class="form-group"><label>الهاتف</label><input type="text" id="setting-phone"></div>
+                        <div class="form-group"><label>اسم اللوجو (يمين الصفحة)</label><input type="text" id="setting-logo"></div>
+                        <div class="form-group"><label>عنوان الكفر الرئيسي (في المنتصف)</label><input type="text" id="setting-title"></div>
+                        <div class="form-group full"><label>الوصف التعريفي بالكفر</label><input type="text" id="setting-subtitle"></div>
+                        <div class="form-group"><label>رقم الهاتف</label><input type="text" id="setting-phone"></div>
                         <div class="form-group"><label>العنوان</label><input type="text" id="setting-address"></div>
                         <div class="form-group full"><label>صورة الغلاف (Background)</label><input type="file" id="setting-hero-file" accept="image/*"></div>
                         <div class="form-group"><label>اللون الأساسي</label><input type="color" id="setting-color-primary" style="height: 40px; cursor: pointer;"></div>
                         <div class="form-group"><label>اللون الثانوي</label><input type="color" id="setting-color-secondary" style="height: 40px; cursor: pointer;"></div>
-                        <div class="form-group full"><button class="btn-primary-action" onclick="saveSettingsToCloud()">حفظ التعديلات ورفعها سحابياً لجميع الناس 🚀</button></div>
+                        <div class="form-group full"><button class="btn-primary-action" onclick="saveSettings()">حفظ التعديلات محلياً</button></div>
                     </div>
                 </div>
 
@@ -155,9 +136,9 @@
                     <div class="form-grid">
                         <div class="form-group"><label>اسم القطعة</label><input type="text" id="new-name" placeholder="مثال: شال كشميري"></div>
                         <div class="form-group"><label>القسم</label><select id="new-cat"><option value="بزار هندي">بزار هندي</option><option value="بزار مصري">بزار مصري</option></select></div>
-                        <div class="form-group full"><label>صورة المنتج</label><input type="file" id="new-img-file" accept="image/*"></div>
+                        <div class="form-group full"><label>صورة المنتج من جهازك</label><input type="file" id="new-img-file" accept="image/*"></div>
                         <div class="form-group full"><label>الوصف</label><input type="text" id="new-desc" placeholder="وصف المنتج"></div>
-                        <div class="form-group full"><button class="btn-primary-action" onclick="addProductToCloud()">إضافة المنتج سحابياً 🚀</button></div>
+                        <div class="form-group full"><button class="btn-primary-action" onclick="addProduct()">إضافة المنتج</button></div>
                     </div>
                 </div>
 
@@ -174,7 +155,7 @@
     </div>
 
     <script>
-        let siteData = {
+        let defaultData = {
             logoText: "Kashmir Store",
             title: "Kashmir Store",
             subtitle: "وجهتك الأولى لتسوق أرقى التحف اليدوية، المنسوجات التراثية، والمشغولات الشرقية الأصيلة.",
@@ -184,16 +165,21 @@
             secondaryColor: "#D4AF37",
             heroBg: "https://images.unsplash.com/photo-1599661046289-e31898746a56?auto=format&fit=crop&w=1200&q=80",
             adminPass: "1234",
-            ghUser: localStorage.getItem('gh_user') || "",
-            ghRepo: localStorage.getItem('gh_repo') || "",
-            ghToken: localStorage.getItem('gh_token') || "",
             products: [
                 { id: 1, name: "شال صوف كشميري أصلي", category: "بزار هندي", desc: "نقشة هندية فاخرة مطرزة يدوياً", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=600&q=80" },
                 { id: 2, name: "علبة إكسسوارات خشب صدف", category: "بزار مصري", desc: "تراث خان الخليلي العريق", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
             ]
         };
 
+        let savedData = localStorage.getItem('kashmir_store_data');
+        let siteData = savedData ? JSON.parse(savedData) : defaultData;
+        if(!siteData.adminPass) siteData.adminPass = "1234";
+
         let currentLang = 'ar';
+
+        function saveData() {
+            localStorage.setItem('kashmir_store_data', JSON.stringify(siteData));
+        }
 
         function applyThemeColors() {
             document.documentElement.style.setProperty('--primary', siteData.primaryColor);
@@ -233,7 +219,7 @@
                         <td><img src="${p.img}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;"></td>
                         <td>${p.name}</td>
                         <td>${p.category}</td>
-                        <td><button class="btn-danger" onclick="deleteProductCloud(${index})">حذف</button></td>
+                        <td><button class="btn-danger" onclick="deleteProduct(${index})">حذف</button></td>
                     </tr>
                 `;
             });
@@ -249,7 +235,7 @@
         }
 
         function checkPassword() {
-            const enteredPass = document.getElementById('admin-password-input'].value.trim();
+            const enteredPass = document.getElementById('admin-password-input').value.trim();
             if (enteredPass === siteData.adminPass || enteredPass === "1234") {
                 closePasswordModal();
                 openAdmin();
@@ -266,84 +252,12 @@
             document.getElementById('setting-address').value = siteData.address;
             document.getElementById('setting-color-primary').value = siteData.primaryColor;
             document.getElementById('setting-color-secondary').value = siteData.secondaryColor;
-            
-            document.getElementById('setting-gh-user').value = siteData.ghUser;
-            document.getElementById('setting-gh-repo').value = siteData.ghRepo;
-            document.getElementById('setting-gh-token').value = siteData.ghToken;
-
             document.getElementById('adminModal').style.display = 'flex';
         }
 
         function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
 
-        // الدالة السحرية لرفع التعديلات أوتوماتيكياً لـ GitHub
-        async function updateGitHubFile() {
-            const user = document.getElementById('setting-gh-user').value.trim();
-            const repo = document.getElementById('setting-gh-repo').value.trim();
-            const token = document.getElementById('setting-gh-token').value.trim();
-
-            if (!user || !repo || !token) {
-                alert('يرجى ملء بيانات ربط GitHub (Username, Repo, Token) أولاً!');
-                return false;
-            }
-
-            // حفظ بيانات الربط في المتصفح لتسهيل المرات القادمة
-            localStorage.setItem('gh_user', user);
-            localStorage.setItem('gh_repo', repo);
-            localStorage.setItem('gh_token', token);
-            siteData.ghUser = user;
-            siteData.ghRepo = repo;
-            siteData.ghToken = token;
-
-            alert('جاري إرسال التعديلات سحابياً إلى GitHub... انتظر ثوانٍ معدودة');
-
-            const path = "index.html";
-            const url = `https://api.github.com/repos/${user}/${repo}/contents/${path}`;
-
-            try {
-                // 1. جلب شفرة ملف index.html الحالي من جيت هب لمعرفة الـ SHA
-                let response = await fetch(url, {
-                    headers: { "Authorization": `token ${token}` }
-                });
-                
-                if (!response.ok) throw new Error('فشل الاتصال بـ GitHub. تأكد من صحة البيانات والرمز.');
-                
-                let fileData = await response.json();
-                let sha = fileData.sha;
-
-                // إنشاء الكود الجديد بالبيانات المحدثة
-                let updatedCode = document.documentElement.outerHTML;
-                
-                // ترميز الملف إلى Base64
-                let contentEncoded = btoa(unescape(encodeURIComponent(updatedCode)));
-
-                // 2. إرسال الملف المحدث لـ GitHub
-                let updateResponse = await fetch(url, {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": `token ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        message: "Update site data via Cloud Admin Panel",
-                        content: contentEncoded,
-                        sha: sha
-                    })
-                });
-
-                if (updateResponse.ok) {
-                    alert('تم تحديث الموقع سحابياً بنجاح! سيظهر التعديل لكل الناس خلال دقيقة.');
-                    return true;
-                } else {
-                    throw new Error('حدث خطأ أثناء حفظ الملف على GitHub.');
-                }
-            } catch (error) {
-                alert(error.message);
-                return false;
-            }
-        }
-
-        async function saveSettings() {
+        function saveSettings() {
             siteData.logoText = document.getElementById('setting-logo').value;
             siteData.title = document.getElementById('setting-title').value;
             siteData.subtitle = document.getElementById('setting-subtitle').value;
@@ -355,21 +269,23 @@
             const heroFileInput = document.getElementById('setting-hero-file');
             if (heroFileInput.files && heroFileInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = async function(e) {
+                reader.onload = function(e) {
                     siteData.heroBg = e.target.result;
+                    saveData();
                     renderSite();
-                    await updateGitHubFile();
+                    alert('تم حفظ التعديلات بنجاح!');
                     closeAdmin();
                 }
                 reader.readAsDataURL(heroFileInput.files[0]);
             } else {
+                saveData();
                 renderSite();
-                let success = await updateGitHubFile();
-                if(success) closeAdmin();
+                alert('تم حفظ التعديلات بنجاح!');
+                closeAdmin();
             }
         }
 
-        async function addProduct() {
+        function addProduct() {
             const name = document.getElementById('new-name').value;
             const category = document.getElementById('new-cat').value;
             const desc = document.getElementById('new-desc').value;
@@ -379,10 +295,11 @@
 
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = async function(e) {
+                reader.onload = function(e) {
                     siteData.products.push({ id: Date.now(), name, category, desc, img: e.target.result });
+                    saveData();
                     renderSite();
-                    await updateGitHubFile();
+                    alert('تمت إضافة المنتج بنجاح!');
                     document.getElementById('new-name').value = '';
                     document.getElementById('new-desc').value = '';
                     document.getElementById('new-img-file').value = '';
@@ -390,18 +307,19 @@
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
                 siteData.products.push({ id: Date.now(), name, category, desc, img: 'https://images.unsplash.com/photo-1599661046289-e31898746a56?auto=format&fit=crop&w=600&q=80' });
+                saveData();
                 renderSite();
-                await updateGitHubFile();
+                alert('تمت إضافة المنتج بنجاح!');
                 document.getElementById('new-name').value = '';
                 document.getElementById('new-desc').value = '';
             }
         }
 
-        async function deleteProduct(index) {
+        function deleteProduct(index) {
             if (confirm('هل أنت متأكد من الحذف؟')) {
                 siteData.products.splice(index, 1);
+                saveData();
                 renderSite();
-                await updateGitHubFile();
             }
         }
 
