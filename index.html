@@ -6,6 +6,7 @@
     <title>Kashmir Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
             --primary: #800020;
@@ -72,9 +73,8 @@
     <nav>
         <div class="logo-area"><h1 id="site-logo-text">Kashmir Store</h1></div>
         <div class="nav-controls">
-            <button class="btn-control" onclick="toggleTheme()"><i class="fa-solid fa-moon" id="theme-icon"></i> <span id="lang-theme-text">الوضع الليلي</span></button>
-            <button class="btn-control" onclick="toggleLang()"><i class="fa-solid fa-globe"></i> <span id="lang-btn-text">English</span></button>
-            <button class="btn-control btn-admin" onclick="openPasswordModal()"><i class="fa-solid fa-gears"></i> <span id="lang-admin-text">لوحة التحكم</span></button>
+            <button class="btn-control" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i> <span id="lang-theme-text">الوضع الليلي</span></button>
+            <button class="btn-control btn-admin" onclick="openPasswordModal()"><i class="fa-solid fa-gears"></i> <span>لوحة التحكم</span></button>
         </div>
     </nav>
 
@@ -84,12 +84,12 @@
     </section>
 
     <div class="container">
-        <div class="section-title"><h3 id="section-heading">معروضات البزار المتميزة</h3></div>
+        <div class="section-title"><h3>معروضات البزار المتميزة</h3></div>
         <div class="products-grid" id="products-container"></div>
     </div>
 
     <footer>
-        <p id="footer-text">جميع الحقوق محفوظة © 2026</p>
+        <p>جميع الحقوق محفوظة © 2026</p>
         <p id="footer-contact" style="margin-top: 8px; font-size: 0.9rem; color: #777;">الهاتف: 01000000000 | العنوان: مصر</p>
     </footer>
 
@@ -111,23 +111,23 @@
     <div class="modal" id="adminModal">
         <div class="modal-content admin-content">
             <div class="admin-header">
-                <h3>لوحة تحكم الأدمن</h3>
+                <h3>لوحة تحكم الأدمن (سحابية عبر GitHub)</h3>
                 <button class="close-modal" onclick="closeAdmin()">&times;</button>
             </div>
             <div class="admin-body">
                 
                 <div class="form-section">
-                    <h4>1. الهوية، العناوين، الخلفية، والألوان</h4>
+                    <h4>1. الهوية والعناوين</h4>
                     <div class="form-grid">
-                        <div class="form-group"><label>اسم اللوجو (يمين الصفحة)</label><input type="text" id="setting-logo"></div>
-                        <div class="form-group"><label>عنوان الكفر الرئيسي (في المنتصف)</label><input type="text" id="setting-title"></div>
-                        <div class="form-group full"><label>الوصف التعريفي بالكفر</label><input type="text" id="setting-subtitle"></div>
+                        <div class="form-group"><label>اسم اللوجو</label><input type="text" id="setting-logo"></div>
+                        <div class="form-group"><label>عنوان الكفر الرئيسي</label><input type="text" id="setting-title"></div>
+                        <div class="form-group full"><label>الوصف التعريفي</label><input type="text" id="setting-subtitle"></div>
                         <div class="form-group"><label>رقم الهاتف</label><input type="text" id="setting-phone"></div>
                         <div class="form-group"><label>العنوان</label><input type="text" id="setting-address"></div>
-                        <div class="form-group full"><label>صورة الغلاف (Background)</label><input type="file" id="setting-hero-file" accept="image/*"></div>
+                        <div class="form-group full"><label>صورة الغلاف (URL)</label><input type="text" id="setting-hero-bg"></div>
                         <div class="form-group"><label>اللون الأساسي</label><input type="color" id="setting-color-primary" style="height: 40px; cursor: pointer;"></div>
                         <div class="form-group"><label>اللون الثانوي</label><input type="color" id="setting-color-secondary" style="height: 40px; cursor: pointer;"></div>
-                        <div class="form-group full"><button class="btn-primary-action" onclick="saveSettings()">حفظ التعديلات محلياً</button></div>
+                        <div class="form-group full"><button class="btn-primary-action" onclick="saveToGitHub()">حفظ ونشر التعديلات سحابياً 🚀</button></div>
                     </div>
                 </div>
 
@@ -136,9 +136,9 @@
                     <div class="form-grid">
                         <div class="form-group"><label>اسم القطعة</label><input type="text" id="new-name" placeholder="مثال: شال كشميري"></div>
                         <div class="form-group"><label>القسم</label><select id="new-cat"><option value="بزار هندي">بزار هندي</option><option value="بزار مصري">بزار مصري</option></select></div>
-                        <div class="form-group full"><label>صورة المنتج من جهازك</label><input type="file" id="new-img-file" accept="image/*"></div>
+                        <div class="form-group full"><label>رابط صورة المنتج (URL)</label><input type="text" id="new-img" placeholder="رابط الصورة"></div>
                         <div class="form-group full"><label>الوصف</label><input type="text" id="new-desc" placeholder="وصف المنتج"></div>
-                        <div class="form-group full"><button class="btn-primary-action" onclick="addProduct()">إضافة المنتج</button></div>
+                        <div class="form-group full"><button class="btn-primary-action" onclick="addProductToGitHub()">إضافة المنتج ونشره سحابياً 🚀</button></div>
                     </div>
                 </div>
 
@@ -155,7 +155,12 @@
     </div>
 
     <script>
-        let defaultData = {
+        const GH_USER = "hazem100100";
+        const GH_REPO = "kashmir";
+        const GH_TOKEN = "Ghp_kG8xuINKkDRqtRS0ObEr4phtEw5Ata1CZBAX";
+        const FILE_PATH = "index.html";
+
+        let siteData = {
             logoText: "Kashmir Store",
             title: "Kashmir Store",
             subtitle: "وجهتك الأولى لتسوق أرقى التحف اليدوية، المنسوجات التراثية، والمشغولات الشرقية الأصيلة.",
@@ -170,16 +175,6 @@
                 { id: 2, name: "علبة إكسسوارات خشب صدف", category: "بزار مصري", desc: "تراث خان الخليلي العريق", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
             ]
         };
-
-        let savedData = localStorage.getItem('kashmir_store_data');
-        let siteData = savedData ? JSON.parse(savedData) : defaultData;
-        if(!siteData.adminPass) siteData.adminPass = "1234";
-
-        let currentLang = 'ar';
-
-        function saveData() {
-            localStorage.setItem('kashmir_store_data', JSON.stringify(siteData));
-        }
 
         function applyThemeColors() {
             document.documentElement.style.setProperty('--primary', siteData.primaryColor);
@@ -219,20 +214,60 @@
                         <td><img src="${p.img}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;"></td>
                         <td>${p.name}</td>
                         <td>${p.category}</td>
-                        <td><button class="btn-danger" onclick="deleteProduct(${index})">حذف</button></td>
+                        <td><button class="btn-danger" onclick="deleteProductFromGitHub(${index})">حذف</button></td>
                     </tr>
                 `;
             });
         }
 
-        function openPasswordModal() {
-            document.getElementById('admin-password-input').value = '';
-            document.getElementById('passwordModal').style.display = 'flex';
+        // دالة رفع التحديثات مباشرة لـ GitHub API وتحديث الموقع لكل الناس
+        async function commitToGitHub(updatedDataPayload) {
+            siteData = updatedDataPayload;
+            renderSite();
+
+            // قراءة كود الصفحة بالكامل لرفعها للمستودع
+            const htmlContent = document.documentElement.outerHTML;
+
+            alert('جاري رفع التعديلات مباشرة إلى سحابة GitHub... يرجى الانتظار ثوانٍ قليلة 🚀');
+
+            try {
+                const url = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${FILE_PATH}`;
+                
+                // 1. جلب الـ SHA الخاص بالملف الحالي
+                const getRes = await fetch(url, {
+                    headers: { "Authorization": `token ${GH_TOKEN}` }
+                });
+                const fileData = await getRes.json();
+                const sha = fileData.sha;
+
+                // 2. تحديث الملف بـ Commit جديد
+                const putRes = await fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `token ${GH_TOKEN}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        message: "Update store via Admin Panel",
+                        content: btoa(unescape(encodeURIComponent(htmlContent))),
+                        sha: sha
+                    })
+                });
+
+                if (putRes.ok) {
+                    alert('تم نشر التعديلات بنجاح على الإنترنت! ستظهر لكل الزوار خلال دقيقة واحدة 🌟');
+                } else {
+                    const err = await putRes.json();
+                    alert('حدث خطأ أثناء النشر: ' + err.message);
+                }
+            } catch (e) {
+                alert('خطأ في الاتصال بشبكة الإنترنت أو بـ GitHub API');
+                console.error(e);
+            }
         }
 
-        function closePasswordModal() {
-            document.getElementById('passwordModal').style.display = 'none';
-        }
+        function openPasswordModal() { document.getElementById('passwordModal').style.display = 'flex'; }
+        function closePasswordModal() { document.getElementById('passwordModal').style.display = 'none'; }
 
         function checkPassword() {
             const enteredPass = document.getElementById('admin-password-input').value.trim();
@@ -240,7 +275,7 @@
                 closePasswordModal();
                 openAdmin();
             } else {
-                alert('كلمة المرور غير صحيحة! الباسورد هو 1234');
+                alert('كلمة المرور غير صحيحة! الباسورد الافتراضي هو 1234');
             }
         }
 
@@ -250,6 +285,7 @@
             document.getElementById('setting-subtitle').value = siteData.subtitle;
             document.getElementById('setting-phone').value = siteData.phone;
             document.getElementById('setting-address').value = siteData.address;
+            document.getElementById('setting-hero-bg').value = siteData.heroBg;
             document.getElementById('setting-color-primary').value = siteData.primaryColor;
             document.getElementById('setting-color-secondary').value = siteData.secondaryColor;
             document.getElementById('adminModal').style.display = 'flex';
@@ -257,88 +293,51 @@
 
         function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
 
-        function saveSettings() {
-            siteData.logoText = document.getElementById('setting-logo').value;
-            siteData.title = document.getElementById('setting-title').value;
-            siteData.subtitle = document.getElementById('setting-subtitle').value;
-            siteData.phone = document.getElementById('setting-phone').value;
-            siteData.address = document.getElementById('setting-address').value;
-            siteData.primaryColor = document.getElementById('setting-color-primary').value;
-            siteData.secondaryColor = document.getElementById('setting-color-secondary').value;
-
-            const heroFileInput = document.getElementById('setting-hero-file');
-            if (heroFileInput.files && heroFileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    siteData.heroBg = e.target.result;
-                    saveData();
-                    renderSite();
-                    alert('تم حفظ التعديلات بنجاح!');
-                    closeAdmin();
-                }
-                reader.readAsDataURL(heroFileInput.files[0]);
-            } else {
-                saveData();
-                renderSite();
-                alert('تم حفظ التعديلات بنجاح!');
-                closeAdmin();
-            }
+        function saveToGitHub() {
+            let newData = JSON.parse(JSON.stringify(siteData));
+            newData.logoText = document.getElementById('setting-logo').value;
+            newData.title = document.getElementById('setting-title').value;
+            newData.subtitle = document.getElementById('setting-subtitle').value;
+            newData.phone = document.getElementById('setting-phone').value;
+            newData.address = document.getElementById('setting-address').value;
+            newData.heroBg = document.getElementById('setting-hero-bg').value;
+            newData.primaryColor = document.getElementById('setting-color-primary').value;
+            newData.secondaryColor = document.getElementById('setting-color-secondary').value;
+            
+            closeAdmin();
+            commitToGitHub(newData);
         }
 
-        function addProduct() {
+        function addProductToGitHub() {
             const name = document.getElementById('new-name').value;
             const category = document.getElementById('new-cat').value;
             const desc = document.getElementById('new-desc').value;
-            const fileInput = document.getElementById('new-img-file');
+            const img = document.getElementById('new-img').value || 'https://images.unsplash.com/photo-1599661046289-e31898746a56?auto=format&fit=crop&w=600&q=80';
 
-            if (!name) { alert('أدخل اسم القطعة'); return; }
+            if (!name) { alert('يرجى إدخال اسم القطعة على الأقل'); return; }
 
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    siteData.products.push({ id: Date.now(), name, category, desc, img: e.target.result });
-                    saveData();
-                    renderSite();
-                    alert('تمت إضافة المنتج بنجاح!');
-                    document.getElementById('new-name').value = '';
-                    document.getElementById('new-desc').value = '';
-                    document.getElementById('new-img-file').value = '';
-                }
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                siteData.products.push({ id: Date.now(), name, category, desc, img: 'https://images.unsplash.com/photo-1599661046289-e31898746a56?auto=format&fit=crop&w=600&q=80' });
-                saveData();
-                renderSite();
-                alert('تمت إضافة المنتج بنجاح!');
-                document.getElementById('new-name').value = '';
-                document.getElementById('new-desc').value = '';
-            }
+            let newData = JSON.parse(JSON.stringify(siteData));
+            newData.products.push({ id: Date.now(), name, category, desc, img });
+            
+            document.getElementById('new-name').value = '';
+            document.getElementById('new-desc').value = '';
+            document.getElementById('new-img').value = '';
+            
+            closeAdmin();
+            commitToGitHub(newData);
         }
 
-        function deleteProduct(index) {
-            if (confirm('هل أنت متأكد من الحذف؟')) {
-                siteData.products.splice(index, 1);
-                saveData();
-                renderSite();
+        function deleteProductFromGitHub(index) {
+            if (confirm('هل أنت متأكد من حذف هذا المنتج ونشره لكل الزوار؟')) {
+                let newData = JSON.parse(JSON.stringify(siteData));
+                newData.products.splice(index, 1);
+                commitToGitHub(newData);
             }
         }
 
         function toggleTheme() {
             const html = document.documentElement;
-            if (html.getAttribute('data-theme') === 'light') html.setAttribute('data-theme', 'dark');
-            else html.setAttribute('data-theme', 'light');
-        }
-
-        function toggleLang() {
-            if (currentLang === 'ar') {
-                currentLang = 'en';
-                document.documentElement.setAttribute('dir', 'ltr');
-                document.getElementById('lang-btn-text').innerText = 'العربية';
-            } else {
-                currentLang = 'ar';
-                document.documentElement.setAttribute('dir', 'rtl');
-                document.getElementById('lang-btn-text').innerText = 'English';
-            }
+            html.setAttribute('data-theme', html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
         }
 
         renderSite();
