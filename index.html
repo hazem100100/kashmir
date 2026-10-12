@@ -157,7 +157,7 @@
     <script>
         const GH_USER = "hazem100100";
         const GH_REPO = "kashmir";
-        const GH_TOKEN = "Ghp_kG8xuINKkDRqtRS0ObEr4phtEw5Ata1CZBAX";
+        const GH_TOKEN = "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";
         const FILE_PATH = "index.html";
 
         let siteData = {
@@ -220,12 +220,10 @@
             });
         }
 
-        // دالة رفع التحديثات مباشرة لـ GitHub API وتحديث الموقع لكل الناس
         async function commitToGitHub(updatedDataPayload) {
             siteData = updatedDataPayload;
             renderSite();
 
-            // قراءة كود الصفحة بالكامل لرفعها للمستودع
             const htmlContent = document.documentElement.outerHTML;
 
             alert('جاري رفع التعديلات مباشرة إلى سحابة GitHub... يرجى الانتظار ثوانٍ قليلة 🚀');
@@ -233,14 +231,12 @@
             try {
                 const url = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${FILE_PATH}`;
                 
-                // 1. جلب الـ SHA الخاص بالملف الحالي
                 const getRes = await fetch(url, {
                     headers: { "Authorization": `token ${GH_TOKEN}` }
                 });
                 const fileData = await getRes.json();
                 const sha = fileData.sha;
 
-                // 2. تحديث الملف بـ Commit جديد
                 const putRes = await fetch(url, {
                     method: "PUT",
                     headers: {
