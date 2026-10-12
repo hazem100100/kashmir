@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kashmir Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #800020;
+            --secondary: #D4AF37;
+            --bg-color: #F9F6F0;
+            --card-bg: #FFFFFF;
+            --text-color: #2C2C2C;
+            --border-color: #E5E7EB;
+        }
+        [data-theme="dark"] {
+            --primary: #9B111E;
+            --secondary: #E5C158;
+            --bg-color: #121212;
+            --card-bg: #1E1E1E;
+            --text-color: #F9F6F0;
+            --border-color: #333333;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+        nav { background-color: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo-area h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--secondary); font-weight: 700; }
+        .nav-controls { display: flex; align-items: center; gap: 12px; }
+        .btn-control { background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .btn-admin { background: var(--primary); color: white; border-color: var(--primary); }
+        .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1599661046289-e31898746a56?auto=format&fit=crop&w=1200&q=80') center/cover; color: #fff; text-align: center; padding: 110px 20px; margin-bottom: 40px; }
+        .hero h2 { font-size: 3rem; margin-bottom: 15px; color: var(--secondary); font-family: 'Playfair Display', serif; }
+        .hero p { font-size: 1.2rem; max-width: 700px; margin: 0 auto; color: #f1f1f1; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
+        .section-title { text-align: center; margin-bottom: 40px; }
+        .section-title h3 { font-size: 2rem; color: var(--primary); position: relative; display: inline-block; padding-bottom: 10px; }
+        .section-title h3::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: var(--secondary); }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .product-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+        .product-img { height: 200px; background-size: cover; background-position: center; }
+        .product-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-bottom: 10px; align-self: flex-start; background: #fef3c7; color: #92400e; }
+        .product-body h4 { font-size: 1.2rem; margin-bottom: 8px; }
+        .product-body p { font-size: 0.9rem; color: #777; flex-grow: 1; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--card-bg); color: var(--text-color); width: 400px; max-width: 90%; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .admin-content { width: 900px; height: 90vh; display: flex; flex-direction: column; overflow: hidden; padding: 0; }
+        .admin-header { background: var(--primary); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .admin-body { padding: 30px; overflow-y: auto; flex-grow: 1; }
+        
+        .form-section { background: var(--bg-color); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; margin-bottom: 25px; }
+        .form-section h4 { color: var(--secondary); margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group.full { grid-column: span 2; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--card-bg); color: var(--text-color); outline: none; }
+        .btn-primary-action { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; }
+        .btn-danger { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border-color); text-align: right; font-size: 0.9rem; }
+        th { color: var(--secondary); }
+        .close-modal { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        footer { background: var(--card-bg); border-top: 1px solid var(--border-color); text-align: center; padding: 30px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-area"><h1 id="site-logo-text">Kashmir Store</h1></div>
+        <div class="nav-controls">
+            <button class="btn-control" onclick="toggleTheme()"><i class="fa-solid fa-moon" id="theme-icon"></i> <span id="lang-theme-text">الوضع الليلي</span></button>
+            <button class="btn-control" onclick="toggleLang()"><i class="fa-solid fa-globe"></i> <span id="lang-btn-text">English</span></button>
+            <button class="btn-control btn-admin" onclick="openPasswordModal()"><i class="fa-solid fa-gears"></i> <span id="lang-admin-text">لوحة التحكم</span></button>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero-section">
+        <h2 id="hero-title">Kashmir Store</h2>
+        <p id="hero-subtitle">وجهتك الأولى لتسوق أرقى التحف اليدوية، المنسوجات التراثية، والمشغولات الشرقية الأصيلة.</p>
+    </section>
+
+    <div class="container">
+        <div class="section-title"><h3 id="section-heading">معروضات البزار المتميزة</h3></div>
+        <div class="products-grid" id="products-container"></div>
+    </div>
+
+    <footer>
+        <p id="footer-text">جميع الحقوق محفوظة © 2026</p>
+        <p id="footer-contact" style="margin-top: 8px; font-size: 0.9rem; color: #777;">الهاتف: 01000000000 | العنوان: مصر</p>
+    </footer>
+
+    <!-- نافذة الباسورد -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 15px; color: var(--primary);">تسجيل دخول الأدمن</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 15px; color: #666;">الباسورد الافتراضي هو: <b>1234</b></p>
+            <div class="form-group">
+                <label>أدخل كلمة المرور</label>
+                <input type="password" id="admin-password-input" placeholder="أدخل الباسورد">
+            </div>
+            <button class="btn-primary-action" onclick="checkPassword()">دخول</button>
+            <button class="btn-primary-action" onclick="closePasswordModal()" style="background: #666; margin-top: 10px;">إلغاء</button>
+        </div>
+    </div>
+
+    <!-- لوحة التحكم -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content admin-content">
+            <div class="admin-header">
+                <h3>لوحة تحكم الأدمن</h3>
+                <button class="close-modal" onclick="closeAdmin()">&times;</button>
+            </div>
+            <div class="admin-body">
+                
+                <div class="form-section">
+                    <h4>1. الهوية، العناوين، الخلفية، والألوان</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>اسم اللوجو (يمين الصفحة)</label>
+                            <input type="text" id="setting-logo">
+                        </div>
+                        <div class="form-group">
+                            <label>عنوان الكفر الرئيسي (في المنتصف)</label>
+                            <input type="text" id="setting-title">
+                        </div>
+                        <div class="form-group full">
+                            <label>الوصف التعريفي بالكفر</label>
+                            <input type="text" id="setting-subtitle">
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الهاتف</label>
+                            <input type="text" id="setting-phone">
+                        </div>
+                        <div class="form-group">
+                            <label>العنوان</label>
+                            <input type="text" id="setting-address">
+                        </div>
+                        <div class="form-group full">
+                            <label>اختر صورة الغلاف (Background) من جهازك</label>
+                            <input type="file" id="setting-hero-file" accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <label>اللون الأساسي</label>
+                            <input type="color" id="setting-color-primary" style="height: 40px; cursor: pointer;">
+                        </div>
+                        <div class="form-group">
+                            <label>اللون الثانوي/الذهبي</label>
+                            <input type="color" id="setting-color-secondary" style="height: 40px; cursor: pointer;">
+                        </div>
+                        <div class="form-group full">
+                            <button class="btn-primary-action" onclick="saveSettings()">حفظ التطبيق نهائياً</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4>2. إضافة قطعة جديدة</h4>
+                    <div class="form-grid">
+                        <div class="form-group"><label>اسم القطعة</label><input type="text" id="new-name" placeholder="مثال: شال كشميري"></div>
+                        <div class="form-group"><label>القسم</label><select id="new-cat"><option value="بزار هندي">بزار هندي</option><option value="بزار مصري">بزار مصري</option></select></div>
+                        <div class="form-group full"><label>صورة المنتج من جهازك</label><input type="file" id="new-img-file" accept="image/*"></div>
+                        <div class="form-group full"><label>الوصف</label><input type="text" id="new-desc" placeholder="وصف المنتج"></div>
+                        <div class="form-group full"><button class="btn-primary-action" onclick="addProduct()">إضافة المنتج</button></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4>3. إدارة وحذف المنتجات</h4>
+                    <table>
+                        <thead><tr><th>صورة</th><th>الاسم</th><th>القسم</th><th>إجراء</th></tr></thead>
+                        <tbody id="admin-products-table"></tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let defaultData = {
+            logoText: "Kashmir Store",
+            title: "Kashmir Store",
+            subtitle: "وجهتك الأولى لتسوق أرقى التحف اليدوية، المنسوجات التراثية، والمشغولات الشرقية الأصيلة.",
+            phone: "01000000000",
+            address: "مصر",
+            primaryColor: "#800020",
+            secondaryColor: "#D4AF37",
+            heroBg: "https://images.unsplash.com/photo-1599661046289-e31898746a56?auto=format&fit=crop&w=1200&q=80",
+            adminPass: "1234",
+            products: [
+                { id: 1, name: "شال صوف كشميري أصلي", category: "بزار هندي", desc: "نقشة هندية فاخرة مطرزة يدوياً", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=600&q=80" },
+                { id: 2, name: "علبة إكسسوارات خشب صدف", category: "بزار مصري", desc: "تراث خان الخليلي العريق", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
+            ]
+        };
+
+        let savedData = localStorage.getItem('kashmir_store_data');
+        let siteData = savedData ? JSON.parse(savedData) : defaultData;
+        
+        // ضمان عدم ضياع الباسورد الافتراضي أبداً
+        if(!siteData.adminPass) siteData.adminPass = "1234";
+
+        let currentLang = 'ar';
+
+        function saveData() {
+            localStorage.setItem('kashmir_store_data', JSON.stringify(siteData));
+        }
+
+        function applyThemeColors() {
+            document.documentElement.style.setProperty('--primary', siteData.primaryColor);
+            document.documentElement.style.setProperty('--secondary', siteData.secondaryColor);
+        }
+
+        function renderSite() {
+            applyThemeColors();
+            document.getElementById('site-logo-text').innerText = siteData.logoText;
+            document.getElementById('hero-title').innerText = siteData.title;
+            document.getElementById('hero-subtitle').innerText = siteData.subtitle;
+            document.getElementById('footer-contact').innerText = `الهاتف: ${siteData.phone} | العنوان: ${siteData.address}`;
+            
+            const heroSection = document.getElementById('hero-section');
+            heroSection.style.background = `linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('${siteData.heroBg}') center/cover`;
+
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+            siteData.products.forEach((p, index) => {
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="product-img" style="background-image: url('${p.img}')"></div>
+                        <div class="product-body">
+                            <span class="product-badge">${p.category}</span>
+                            <h4>${p.name}</h4>
+                            <p>${p.desc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const adminTable = document.getElementById('admin-products-table');
+            adminTable.innerHTML = '';
+            siteData.products.forEach((p, index) => {
+                adminTable.innerHTML += `
+                    <tr>
+                        <td><img src="${p.img}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;"></td>
+                        <td>${p.name}</td>
+                        <td>${p.category}</td>
+                        <td><button class="btn-danger" onclick="deleteProduct(${index})">حذف</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openPasswordModal() {
+            document.getElementById('admin-password-input').value = '';
+            document.getElementById('passwordModal').style.display = 'flex';
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+        }
+
+        function checkPassword() {
+            const enteredPass = document.getElementById('admin-password-input').value.trim();
+            if (enteredPass === siteData.adminPass || enteredPass === "1234") {
+                closePasswordModal();
+                openAdmin();
+            } else {
+                alert('كلمة المرور غير صحيحة! الباسورد هو 1234');
+            }
+        }
+
+        function openAdmin() {
+            document.getElementById('setting-logo').value = siteData.logoText;
+            document.getElementById('setting-title').value = siteData.title;
+            document.getElementById('setting-subtitle').value = siteData.subtitle;
+            document.getElementById('setting-phone').value = siteData.phone;
+            document.getElementById('setting-address').value = siteData.address;
+            document.getElementById('setting-color-primary').value = siteData.primaryColor;
+            document.getElementById('setting-color-secondary').value = siteData.secondaryColor;
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+
+        function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+
+        function saveSettings() {
+            siteData.logoText = document.getElementById('setting-logo').value;
+            siteData.title = document.getElementById('setting-title').value;
+            siteData.subtitle = document.getElementById('setting-subtitle').value;
+            siteData.phone = document.getElementById('setting-phone').value;
+            siteData.address = document.getElementById('setting-address').value;
+            siteData.primaryColor = document.getElementById('setting-color-primary').value;
+            siteData.secondaryColor = document.getElementById('setting-color-secondary').value;
+
+            const heroFileInput = document.getElementById('setting-hero-file');
+            if (heroFileInput.files && heroFileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    siteData.heroBg = e.target.result;
+                    finalizeSave();
+                }
+                reader.readAsDataURL(heroFileInput.files[0]);
+            } else {
+                finalizeSave();
+            }
+        }
+
+        function finalizeSave() {
+            saveData();
+            renderSite();
+            document.getElementById('setting-hero-file').value = '';
+            alert('تم حفظ البيانات بنجاح وثبات دائم!');
+            closeAdmin();
+        }
+
+        function addProduct() {
+            const name = document.getElementById('new-name').value;
+            const category = document.getElementById('new-cat').value;
+            const desc = document.getElementById('new-desc').value;
+            const fileInput = document.getElementById('new-img-file');
+
+            if (!name) { alert('أدخل اسم القطعة'); return; }
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    siteData.products.push({ id: Date.now(), name, category, desc, img: e.target.result });
+                    saveData();
+                    renderSite();
+                    alert('تمت إضافة المنتج بنجاح!');
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                siteData.products.push({ id: Date.now(), name, category, desc, img: 'https://images.unsplash.com/photo-1599661046289-e31898746a56?auto=format&fit=crop&w=600&q=80' });
+                saveData();
+                renderSite();
+                alert('تمت إضافة المنتج بنجاح!');
+            }
+        }
+
+        function deleteProduct(index) {
+            if (confirm('هل أنت متأكد من الحذف؟')) {
+                siteData.products.splice(index, 1);
+                saveData();
+                renderSite();
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.getAttribute('data-theme') === 'light') html.setAttribute('data-theme', 'dark');
+            else html.setAttribute('data-theme', 'light');
+        }
+
+        function toggleLang() {
+            if (currentLang === 'ar') {
+                currentLang = 'en';
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.getElementById('lang-btn-text').innerText = 'العربية';
+            } else {
+                currentLang = 'ar';
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.getElementById('lang-btn-text').innerText = 'English';
+            }
+        }
+
+        renderSite();
+    </script>
+</body>
+</html>
