@@ -1,0 +1,23 @@
+{
+    "logoText": "Kashmir Store",
+    "title": "Kashmir Store",
+    "subtitle": "وجهتك الأولى لتسوق أرقى التحف اليدوية، المنسوجات التراثية، والمشغولات الشرقية الأصيلة.",
+    "phone": "01000000000",
+    "address": "مصر",
+    "products": [
+        {
+            "id": 1,
+            "name": "شال صوف كشميري أصلي",
+            "category": "بزار هندي",
+            "desc": "نقشة هندية فاخرة مطرزة يدوياً",
+            "img": "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+            "id": 2,
+            "name": "علبة إكسسوارات خشب صدف",
+            "category": "بزار مصري",
+            "desc": "تراث خان الخليلي العريق",
+            "img": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80"
+        }
+    ]
+}
